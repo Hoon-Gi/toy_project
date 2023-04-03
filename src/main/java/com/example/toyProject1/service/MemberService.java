@@ -1,25 +1,37 @@
 package com.example.toyProject1.service;
 
-import com.example.toyProject1.controller.dto.InsertMemberInfoDto;
-import com.example.toyProject1.controller.dto.ReadMemberInfoDto;
-import com.example.toyProject1.controller.dto.UpdateMemberInfoDto;
+import com.example.toyProject1.controller.member.dto.InsertMemberInfoDto;
+import com.example.toyProject1.controller.member.dto.LoginDataDto;
+import com.example.toyProject1.controller.member.dto.ReadMemberInfoDto;
+import com.example.toyProject1.controller.member.dto.UpdateMemberInfoDto;
 import com.example.toyProject1.domain.member.Member;
 import com.example.toyProject1.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Insert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
 
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
     @Transactional
     public Integer insertMemberInfo(InsertMemberInfoDto dto) {
-        return memberRepository.save(dto.toEntity()).getMemberId();
+        //Member member = new Member(dto.getMemberName(), dto.getMemberNumber());
+        Member member = Member.builder()
+                .memberName(dto.getMemberName())
+                .memberNumber(dto.getMemberNumber())
+                .build();
+
+        Member savedMember = memberRepository.save(member);
+        return member.getMemberId();
     }
 
     @Transactional
@@ -53,4 +65,11 @@ public class MemberService {
         return "success";
     }
 
+    @Transactional
+    public Integer login(LoginDataDto dto) {
+       Member member = memberRepository.findByMemberNameAndMemberNumberEndsWith(dto.getMemberName(), dto.getMemberNumberSuffix())
+               .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+
+       return member.getMemberId();
+    }
 }

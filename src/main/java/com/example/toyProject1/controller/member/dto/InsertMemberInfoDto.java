@@ -1,4 +1,4 @@
-package com.example.toyProject1.controller.dto;
+package com.example.toyProject1.controller.member.dto;
 
 import com.example.toyProject1.domain.member.Member;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package com.example.toyProject1.controller;
 
-import com.example.toyProject1.controller.dto.InsertMemberInfoDto;
-import com.example.toyProject1.controller.dto.UpdateMemberInfoDto;
+import com.example.toyProject1.controller.member.dto.InsertMemberInfoDto;
+import com.example.toyProject1.controller.member.dto.UpdateMemberInfoDto;
 import com.example.toyProject1.domain.member.Member;
 import com.example.toyProject1.domain.member.MemberRepository;
 import org.junit.Test;
